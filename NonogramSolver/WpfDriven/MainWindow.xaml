@@ -1,0 +1,89 @@
+﻿<Window
+   x:Class="NonogramSolver.WpfDriven.MainWindow"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+   xmlns:local="clr-namespace:NonogramSolver.WpfDriven"
+   mc:Ignorable="d"
+   Title="Nonogram Solver"
+   Height="350" Width="500"
+   Background="#FFAAAAAA">
+
+   <Window.DataContext>
+      <local:ViewModel/>
+   </Window.DataContext>
+
+   <Window.Resources>
+      <ResourceDictionary>
+
+         <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="6,7,6,6"/>
+         </Style>
+
+         <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+         </Style>
+
+         <Style TargetType="Button">
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Width" Value="75"/>
+         </Style>
+         
+      </ResourceDictionary>
+   </Window.Resources>
+   
+   <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <!-- input area -->
+      <Grid Margin="6">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+         </Grid.RowDefinitions>
+
+         <TextBlock Text="Predefined puzzle:"/>
+         <ComboBox
+            Grid.Column="1"
+            ItemsSource="{Binding PredefinedPuzzles}"
+            DisplayMemberPath="Name"
+            Width="150"
+            SelectedItem="{Binding SelectedPuzzle}"
+            HorizontalAlignment="Left"/>
+
+         <TextBlock Grid.Row="1" Text="Column constraints:"/>
+         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ColumnConstraints}"/>
+
+         <TextBlock Grid.Row="2" Text="Row constraints:"/>
+         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding RowConstraints}"/>
+
+      </Grid>
+
+      <StackPanel Orientation="Horizontal" Grid.Row="1">
+         <Button Content="Solve" Command="{Binding SolveCommand}"/>
+         <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+         <TextBlock
+            Text="{Binding SolveTime, StringFormat=Solve time: {0:d'.'hh':'mm':'ss'.'fff}}"
+            VerticalAlignment="Center"/>
+      </StackPanel>
+
+      <Viewbox Grid.Row="2" Stretch="Uniform" StretchDirection="Both" Margin="16,10,16,16">
+         <Grid x:Name="SolutionGrid"/>
+      </Viewbox>
+
+   </Grid>
+   
+</Window>
